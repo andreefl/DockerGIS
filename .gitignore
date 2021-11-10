@@ -1,0 +1,7 @@
+.env
+
+# NGINX
+containers/nginx/ssl/
+containers/nginx/logs/*.log
+containers/nginx/sites/*.conf
+!containers/nginx/sites/example.conf
