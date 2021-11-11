@@ -5,7 +5,7 @@ services:
       context: ${NGINX_CONTAINER_PATH}
     volumes:
       - ${HOST_CODE_PATH}:${CONTAINER_CODE_PATH}
-      - ${NGINX_LOGS_PATH}:/var/log/nginx
+      - ${HOST_VOLUMES_PATH}/nginx/logs:/var/log/nginx
       - ${NGINX_SITES_PATH}:/etc/nginx/sites-available
       - ${NGINX_SSL_PATH}:/etc/nginx/ssl
     ports:
@@ -43,7 +43,7 @@ services:
   postgres:
     image: postgis/postgis:latest
     volumes:
-      - ${POSTGRES_CONTAINER_PATH}/postgres:/var/lib/postgresql/data
+      - ${HOST_VOLUMES_PATH}/postgres:/var/lib/postgresql/data
     ports:
       - "${POSTGRES_PORT}:5432"
     environment:
@@ -54,21 +54,21 @@ services:
 ########## PGADMIN ##########
   pgadmin:
     image: dpage/pgadmin4:latest
+    volumes:
+      - ${HOST_VOLUMES_PATH}/pgadmin:/var/lib/pgadmin
+    ports:
+      - "${PGADMIN_PORT}:80"
     environment:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
-    ports:
-      - "${PGADMIN_PORT}:80"
-    volumes:
-      - ${PGADMIN_CONTAINER_PATH}/pgadmin:/var/lib/pgadmin
 
 ########## GEOSERVER ##########
   geoserver:
     image: kartoza/geoserver:${GEOSERVER_VERSION}
-    ports:
-        - ${GEOSERVER_PORT}:8080
     volumes:
-      - ${GEOSERVER_CONTAINER_PATH}:${GEOSERVER_DATA_DIR}
+      - ${HOST_VOLUMES_PATH}/geoserver:${GEOSERVER_DATA_DIR}
+    ports:
+      - ${GEOSERVER_PORT}:8080
     environment:
       - GEOSERVER_DATA_DIR=${GEOSERVER_DATA_DIR}
       - GEOWEBCACHE_CACHE_DIR=${GEOWEBCACHE_CACHE_DIR}

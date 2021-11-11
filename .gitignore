@@ -7,5 +7,5 @@ containers/nginx/logs/*.log
 containers/nginx/sites/*.conf
 !containers/nginx/sites/example.conf
 
-# POSTGRES & PGADMIN
-containers/postgres/*/
+# PERSISTENT DATA
+volumes/
