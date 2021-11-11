@@ -31,7 +31,6 @@ services:
       args:
         - PHP_VERSION=${PHP_VERSION}
         - TZ=${WORKSPACE_TIMEZONE}
-        - LOCALE=${WORKSPACE_LOCALE}
         - PUNAME=${WORKSPACE_NONROOT_USER_NAME}
         - PUID=${WORKSPACE_NONROOT_USER_ID}
         - PGNAME=${WORKSPACE_NONROOT_GROUP_NAME}
@@ -39,3 +38,26 @@ services:
     volumes:
       - ${HOST_CODE_PATH}:${CONTAINER_CODE_PATH}
     tty: true
+
+########## POSTGRES ##########
+  postgres:
+    image: postgis/postgis:latest
+    volumes:
+      - ${POSTGRES_CONTAINER_PATH}/postgres:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+########## PGADMIN ##########
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+    ports:
+      - "${PGADMIN_PORT}:80"
+    volumes:
+      - ${PGADMIN_CONTAINER_PATH}/pgadmin:/var/lib/pgadmin

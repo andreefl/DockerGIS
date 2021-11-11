@@ -6,7 +6,7 @@ RUN locale-gen $LOCALE \
     && update-locale LANG=$LOCALE
 
 # Define a timezone
-ARG TZ=UTC-3
+ARG TZ=UTC
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Adiciona pacotes obrigatórios
