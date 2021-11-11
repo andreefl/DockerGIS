@@ -12,7 +12,7 @@ RUN apk update \
 # Cria o grupo e usuario www-data dentro do container
 RUN set -x ; \
     addgroup -g 82 -S www-data ; \
-    adduser -u 82 -D -S -G www-data www-data && exit 0 ; exit 1
+    adduser -u 82 -D -S -G www-data www-data
 
 # Remove a confiuguração default
 RUN rm /etc/nginx/conf.d/default.conf

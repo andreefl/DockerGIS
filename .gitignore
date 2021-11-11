@@ -1,5 +1,8 @@
 .env
 
+# APPS
+apps/
+
 # NGINX
 containers/nginx/ssl/
 containers/nginx/logs/*.log

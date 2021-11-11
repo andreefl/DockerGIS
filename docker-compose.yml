@@ -1,4 +1,5 @@
 services:
+########## NGINX ##########
   nginx:
     build:
       context: ${NGINX_CONTAINER_PATH}
@@ -13,6 +14,7 @@ services:
     links:
       - php-fpm
 
+########## PHP-FPM ##########
   php-fpm:
     build:
       context: ${PHP_FPM_CONTAINER_PATH}
@@ -21,3 +23,19 @@ services:
     volumes:
       - ${PHP_FPM_CONTAINER_PATH}/php.ini:/usr/local/etc/php/php.ini
       - ${HOST_CODE_PATH}:${CONTAINER_CODE_PATH}
+
+########## WORKSPACE ##########
+  workspace:
+    build:
+      context: ${WORKSPACE_CONTAINER_PATH}
+      args:
+        - PHP_VERSION=${PHP_VERSION}
+        - TZ=${WORKSPACE_TIMEZONE}
+        - LOCALE=${WORKSPACE_LOCALE}
+        - PUNAME=${WORKSPACE_NONROOT_USER_NAME}
+        - PUID=${WORKSPACE_NONROOT_USER_ID}
+        - PGNAME=${WORKSPACE_NONROOT_GROUP_NAME}
+        - PGID=${WORKSPACE_NONROOT_GROUP_ID}
+    volumes:
+      - ${HOST_CODE_PATH}:${CONTAINER_CODE_PATH}
+    tty: true
