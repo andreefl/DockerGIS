@@ -50,8 +50,6 @@ RUN set -eux \
       tree \
       postgresql-client \
       apt-utils \
-      nodejs \
-      npm \
     && apt-get clean \
     && curl -s http://getcomposer.org/installer | php \
     && echo "export PATH=${PATH}:/var/www/vendor/bin" >> ~/.bashrc \
@@ -77,6 +75,10 @@ RUN echo "" >> ~/.bashrc && \
 
 RUN echo "" >> ~/.bashrc && \
     echo 'export PATH="/var/www/vendor/bin:$PATH"' >> ~/.bashrc
+
+# Instala o Node
+RUN curl -fsSL https://deb.nodesource.com/setup_17.x | bash -
+RUN apt-get install -y nodejs
 
 # Limpa arquivos temporários do apt-get
 RUN apt-get clean && \
