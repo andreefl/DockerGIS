@@ -1,7 +1,7 @@
 FROM phusion/baseimage:focal-1.0.0
 
 # Define a linguagem padrão para português
-ARG LOCALE=pt_BR.UTF-8
+ARG LOCALE=en_US.UTF-8
 RUN locale-gen $LOCALE \
     && update-locale LANG=$LOCALE
 

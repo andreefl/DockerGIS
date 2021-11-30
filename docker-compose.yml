@@ -24,6 +24,15 @@ services:
       - ${PHP_FPM_CONTAINER_PATH}/php.ini:/usr/local/etc/php/php.ini
       - ${HOST_CODE_PATH}:${CONTAINER_CODE_PATH}
 
+  php-fpm7:
+    build:
+      context: ${PHP_FPM_CONTAINER_PATH}
+      args:
+        - PHP_VERSION=7.4
+    volumes:
+      - ${PHP_FPM_CONTAINER_PATH}/php.ini:/usr/local/etc/php/php.ini
+      - ${HOST_CODE_PATH}:${CONTAINER_CODE_PATH}
+
 ########## WORKSPACE ##########
   workspace:
     build:
@@ -31,6 +40,22 @@ services:
       args:
         - PHP_VERSION=${PHP_VERSION}
         - TZ=${WORKSPACE_TIMEZONE}
+        - LOCALE=${WORKSPACE_LOCALE}
+        - PUNAME=${WORKSPACE_NONROOT_USER_NAME}
+        - PUID=${WORKSPACE_NONROOT_USER_ID}
+        - PGNAME=${WORKSPACE_NONROOT_GROUP_NAME}
+        - PGID=${WORKSPACE_NONROOT_GROUP_ID}
+    volumes:
+      - ${HOST_CODE_PATH}:${CONTAINER_CODE_PATH}
+    tty: true
+  
+  workspace7:
+    build:
+      context: ${WORKSPACE_CONTAINER_PATH}
+      args:
+        - PHP_VERSION=7.4
+        - TZ=${WORKSPACE_TIMEZONE}
+        - LOCALE=${WORKSPACE_LOCALE}
         - PUNAME=${WORKSPACE_NONROOT_USER_NAME}
         - PUID=${WORKSPACE_NONROOT_USER_ID}
         - PGNAME=${WORKSPACE_NONROOT_GROUP_NAME}
@@ -64,7 +89,11 @@ services:
 
 ########## GEOSERVER ##########
   geoserver:
-    image: kartoza/geoserver:${GEOSERVER_VERSION}
+    build:
+      context: ${GEOSERVER_CONTAINER_PATH}
+      args:
+        - GEOSERVER_VERSION=${GEOSERVER_VERSION}
+        - LOCALE=${WORKSPACE_LOCALE}
     volumes:
       - ${HOST_VOLUMES_PATH}/geoserver:${GEOSERVER_DATA_DIR}
     ports:
